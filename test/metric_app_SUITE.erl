@@ -19,7 +19,7 @@ benchmark(_Config) ->
     {ok, _} = metric_workers_sup:start_link(3, 1),
     {Time, Value} = timer:tc(fun work/1, [10000]),
     ?assertEqual(2.0, Value),
-    ?assert(Time < 500000),
+    ?assert(Time < 5000000),
     true = exit(whereis(metric_workers_sup), normal),
     ok = application:stop(gproc).
 
