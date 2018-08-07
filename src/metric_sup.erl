@@ -6,6 +6,7 @@
 
 -define(SERVER, ?MODULE).
 
+-spec start_link(SmoothInterval :: integer(), Interval :: integer()) -> {ok, pid()}.
 start_link(SmoothInterval, Interval) ->
     supervisor:start_link({local, ?SERVER}, ?MODULE, {SmoothInterval, Interval}).
 

@@ -16,9 +16,11 @@
 
 -define(SERVER, ?MODULE).
 
+-spec start_link(Interval :: integer()) -> {ok, pid()}.
 start_link(Interval) ->
     gen_server:start_link({local, ?SERVER}, ?MODULE, Interval, []).
 
+-spec tick() -> ok.
 tick() ->
     lists:foreach(fun metric_worker:tick/1, metric_worker:all()).
 

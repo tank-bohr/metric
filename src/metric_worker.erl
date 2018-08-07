@@ -20,6 +20,7 @@
 
 -record(state, {name, sma}).
 
+-spec all() -> list(pid()).
 all() ->
     gproc:select({l, n}, [{
         {                 %% Head begins
@@ -31,6 +32,7 @@ all() ->
         ['$2']            %% Result
     }]).
 
+-spec find_or_create(MetricName :: binary()) -> pid().
 find_or_create(MetricName) ->
     case gproc:where({n, l, MetricName}) of
         undefined ->
@@ -41,15 +43,19 @@ find_or_create(MetricName) ->
             ExistingWorker
     end.
 
+-spec start_link(SmoothInterval :: integer(), Interval :: integer(), Name :: binary()) -> {ok, pid()}.
 start_link(SmoothInterval, Interval, Name) ->
     gen_server:start_link(?MODULE, {SmoothInterval, Interval, Name}, []).
 
+-spec tick(Worker :: pid()) -> ok.
 tick(Worker) ->
     gen_server:call(Worker, tick).
 
+-spec report(Worker :: pid(), Value :: float()) -> ok.
 report(Worker, Value) ->
     gen_server:call(Worker, {report, Value}).
 
+-spec average(Worker :: pid()) -> undefined | float().
 average(Worker) ->
     gen_server:call(Worker, average).
 
